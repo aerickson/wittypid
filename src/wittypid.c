@@ -33,7 +33,7 @@
 #include <sys/types.h>
 #include <linux/reboot.h>
 #include "confuse.h"
-#include "wiringX.h"
+#include "wiringx.h"
 
 #define CONFIGFILE	"/etc/wittypid.conf"	// default config location
 
@@ -51,8 +51,9 @@ void sleep_ms(int milliseconds) {
 
 int set_halt_gpio(int haltgpio) {
 	int ret = 1;
+	enum isr_mode_t isr_enum = ISR_MODE_FALLING;
 
-	ret = wiringXISR(haltgpio, INT_EDGE_FALLING);
+	ret = wiringXISR(haltgpio, isr_enum);
 	if (ret != 0) {
         syslog(LOG_ERR, "Setting GPIO %d to INT_EDGE_FALLING failed\n", haltgpio);
 	}
@@ -133,7 +134,7 @@ int main(int argc, char *argv[]) {
 
 	/* Get the HALT_GPIO and check if valid */
 	gpio = cfg_getint(cfg, "HALT_GPIO");
-	wiringXSetup();
+	wiringXSetup("raspberrypi1b+", NULL);
 	if (wiringXValidGPIO(gpio) != 0) {
 		syslog(LOG_ERR, "Invalid HALT_GPIO %d in config file!\n", gpio);
 		exit(EXIT_FAILURE);

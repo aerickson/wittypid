@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS += -Wall
-LDLIBS = -lwiringX -lconfuse
+LDLIBS = -lwiringx -lconfuse
 
 DESTDIR ?=
 bindir = /usr/bin/
